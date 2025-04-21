@@ -15,9 +15,10 @@ import {
 } from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import { useTemplateRef, onMounted } from "vue";
+import { useTemplateRef, onMounted, onUnmounted } from "vue";
 
 const container = useTemplateRef("container");
+const gui = new GUI();
 
 const init = () => {
   // 1.创建场景
@@ -63,8 +64,6 @@ const init = () => {
   new OrbitControls(camera, renderer.domElement);
 };
 const guiInit = (mesh: Mesh, pointLight: PointLight) => {
-  const gui = new GUI();
-
   const meshFolder = gui.addFolder("mesh");
   meshFolder.addColor(mesh.material, "color");
   meshFolder.add(mesh.position, "x").step(10);
@@ -80,14 +79,26 @@ const guiInit = (mesh: Mesh, pointLight: PointLight) => {
   const otherFolder = gui.addFolder("other");
   const obj = {
     aaa: "你好",
-    bbb: "世界",
+    bbb: 0,
+    logic: () => {
+      console.log("逻辑");
+    },  
   };
   otherFolder.add(obj, "aaa");
   otherFolder.add(obj, "bbb");
+  otherFolder.add(obj, "logic");
+};
+
+const guiClear = () => {
+  gui.destroy();
 };
 onMounted(() => {
   init();
 });
+
+onUnmounted(() => {
+  guiClear();
+})
 </script>
 
 <style scoped lang="scss"></style>

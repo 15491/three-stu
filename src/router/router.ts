@@ -22,6 +22,14 @@ export const routes: RouteRecordRaw[] = [
           title: "dat.gui 可视化调试",
           icon: "Menu"
         }
+      },
+      {
+        path: "camera",
+        component: () => import("@/view/03.camera/index.vue"),
+        meta: {
+          title: "相机",
+          icon: "Camera"
+        }
       }
     ],
   },
