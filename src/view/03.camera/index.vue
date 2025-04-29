@@ -2,7 +2,7 @@
   <div ref="container"></div>
 </template>
 <script setup lang="ts">
-import { Scene, AxesHelper, PerspectiveCamera, WebGLRenderer } from "three";
+import { Scene, AxesHelper, PerspectiveCamera, WebGLRenderer, CameraHelper  } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { useTemplateRef, onMounted } from "vue";
@@ -19,6 +19,10 @@ const init = () => {
 
   // 3.创建相机
   const camera = new PerspectiveCamera(60, 1, 1, 1000);
+  const camera2 = new PerspectiveCamera(20, 2, 150, 300);
+
+  const cameraHelper = new CameraHelper(camera2)  
+
   // 设置相机位置
   camera.position.set(200, 200, 200);
   // 设置相机朝向
@@ -26,10 +30,11 @@ const init = () => {
 
   // 4.场景添加相机
   scene.add(camera);
+  scene.add(cameraHelper);
 
   // 5.创建渲染器
   const renderer = new WebGLRenderer();
-  renderer.setSize(500, 500);
+  renderer.setSize(800, 800);
 
   const render = () => {
     renderer.render(scene, camera);
