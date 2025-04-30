@@ -4,10 +4,12 @@
 <script setup lang="ts">
 import { Scene, AxesHelper, PerspectiveCamera, WebGLRenderer, CameraHelper  } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { useTemplateRef, onMounted } from "vue";
+import { useTemplateRef, onMounted, onUnmounted } from "vue";
 
 const container = useTemplateRef("container");
+const gui = new GUI()
 
 const init = () => {
   // 1. 创建场景
@@ -42,6 +44,20 @@ const init = () => {
   };
   render();
 
+  const handleChange = () => {
+    camera2.updateProjectionMatrix();
+    cameraHelper.update()
+  }
+
+  gui.add(camera2, "fov", [30, 60, 10]).onChange(handleChange);
+  gui.add(camera2, "aspect", -300, {
+    '16/9': 2,
+    '4/3': 4/3,
+  }).onChange(handleChange);
+  gui.add(camera2, "near", -300, 300, 1);
+  gui.add(camera2, "far", -300, 300, 1);
+
+
   // 7.添加到页面
   container.value?.append(renderer.domElement);
 
@@ -49,8 +65,16 @@ const init = () => {
   new OrbitControls(camera, renderer.domElement);
 };
 
+const guiClear = () => {
+  gui.destroy();
+};
+
 onMounted(() => {
   init();
 });
+
+onUnmounted(() => {
+  guiClear();
+})
 </script>
 <style scoped lang="scss"></style>

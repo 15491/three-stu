@@ -30,6 +30,14 @@ export const routes: RouteRecordRaw[] = [
           title: "相机",
           icon: "Camera"
         }
+      },
+      {
+        path: "buffer-geometry",
+        component: () => import("@/view/04.buffer-geometry/index.vue"),
+        meta: {
+          title: "几何体",
+          icon: "Menu"
+        }
       }
     ],
   },
